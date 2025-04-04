@@ -1,2 +1,0 @@
-class UserIsAnInvalidAgentIdError(Exception):
-    pass
