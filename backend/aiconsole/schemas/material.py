@@ -1,20 +1,26 @@
 from pydantic import BaseModel
-from typing import Optional
 
 
 class MaterialBase(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str = ""
     content: str
-    file_url: Optional[str] = None
+    file_url: str = ""
 
 
 class MaterialCreate(MaterialBase):
     pass
 
 
-class MaterialResponse(MaterialBase):
+class MaterialUpdate(BaseModel):
+    name: str = None
+    description: str = None
+    content: str = None
+    file_url: str = None
+
+
+class MaterialOut(MaterialBase):
     id: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True
