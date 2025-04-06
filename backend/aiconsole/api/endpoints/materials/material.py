@@ -36,6 +36,8 @@ from aiconsole.core.assets.materials.material import (
 )
 from aiconsole.core.assets.types import AssetLocation, AssetStatus, AssetType
 from aiconsole.core.project import project
+from aiconsole.utils.git_utils import GitRepository
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -114,6 +116,31 @@ def fibonacci(n):
 """.strip()
     else:
         raise ValueError("Invalid material content type")
+
+
+materials_repo = GitRepository("F:/Python/aiconsole/materials")
+
+
+class CommitMessage(BaseModel):
+    message: str
+
+
+@router.post("/materials/commit/")
+def commit_materials(message: CommitMessage):
+    try:
+        materials_repo.commit_changes(message.message)
+        return {"status": "success", "message": "Changes committed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/materials/changelog/")
+def get_materials_changelog():
+    try:
+        changelog = materials_repo.get_changelog()
+        return {"status": "success", "changelog": changelog}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/{material_id}")

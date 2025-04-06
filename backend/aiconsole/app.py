@@ -17,6 +17,7 @@
 import os
 from contextlib import asynccontextmanager
 from logging import config, getLogger
+from dotenv import load_dotenv
 
 import sentry_sdk
 from fastapi import FastAPI
@@ -27,6 +28,8 @@ from aiconsole.consts import log_config
 from aiconsole.core.project.paths import get_project_directory_safe
 from aiconsole.core.settings.fs.settings_file_storage import SettingsFileStorage
 from aiconsole.core.settings.settings import settings
+
+load_dotenv()
 
 if "BE_SENTRY_DSN" in os.environ:
     sentry_sdk.init(
